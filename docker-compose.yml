@@ -6,9 +6,8 @@ services:
   vote:
     build:
       context: .
-      target: dev
     volumes:
-     - ./src/config.py:/app/src/config.py
+     - ./src/config.py:/app/config.py
      - ./files:/app/files
 
     networks:

@@ -63,9 +63,9 @@ def post_oauth_token(http, iteration):
             break
         # process respons
     # wait for seconds
-    print(
-        "container ready, waiting another tiempo_espera_sec seconds to ensure everything is set up"
-    )
+    # print(
+    #     "container ready, waiting another tiempo_espera_sec seconds to ensure everything is set up"
+    # )
     time.sleep(config.agent["tiempo_espera_sec"])
     logger.debug("response: {}".format(response.text))
     logger.info(
