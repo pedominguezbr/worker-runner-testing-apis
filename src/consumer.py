@@ -13,6 +13,8 @@ import json
 import numpy as np
 
 import requests
+import random
+import string
 
 # # from requests import Request, Session
 # from requests_toolbelt import MultipartEncoder
@@ -25,6 +27,14 @@ print("Iniciando...")
 http = requests.Session()
 
 
+def get_random_string(length):
+    # choose from all lowercase letter
+    letters = string.ascii_lowercase
+    result_str = "".join(random.choice(letters) for i in range(length))
+    print("Random string of length", length, "is:", result_str)
+    return result_str
+
+
 def post_oauth_token(http, iteration):
     url = config.post_oauth_token["Url"]
 
@@ -33,6 +43,8 @@ def post_oauth_token(http, iteration):
         "client_id": config.post_oauth_token["client_id"],
         "client_secret": config.post_oauth_token["client_secret"],
         "scope": config.post_oauth_token["scope"],
+        "username": get_random_string(10),
+        "password": get_random_string(10),
     }
 
     headers = {
