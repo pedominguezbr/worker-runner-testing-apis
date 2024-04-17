@@ -1,0 +1,21 @@
+# version is now using "compose spec"
+# v2 and v3 are now combined!
+# docker-compose v1.27+ required
+
+services:
+  vote:
+    build:
+      context: .
+      target: dev
+    volumes:
+     - ./src/config.py:/app/src/config.py
+     - ./files:/app/files
+
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  back-tier:

@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: worker-runner-load-test
+  namespace: default
+spec:
+  schedule: '* * * * *'
+  concurrencyPolicy: Forbid
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      parallelism: 1
+      completions: 1
+      backoffLimit: 0
+      manualSelector: false
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          volumes:
+            - configMap:
+                defaultMode: 256
+                name: worker-runner-load-test
+                optional: false
+              name: worker-runner-load-test
+          containers:
+            - name: worker-runner-load-test
+              image: gcr.io/mi-casino/worker-runner-load-test:latest
+              envFrom:
+                - configMapRef:
+                    name: micasino-wallet
+                    optional: false
+              resources: {}
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+              - mountPath: /app/config.py
+                name: worker-runner-load-test
+                subPath: config-query
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          automountServiceAccountToken: true
+          shareProcessNamespace: false
+          securityContext: {}
+          schedulerName: default-scheduler
+          enableServiceLinks: true
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker-runner-load-test
+  namespace: default
+data:
+  config-query: ''
